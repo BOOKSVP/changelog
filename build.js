@@ -22,7 +22,7 @@ function md(text) {
     .replace(/^## (.+)$/gm, (_, h) => {
       let cls = '', icon = '', label = '';
       const clean = h.replace(/[\u{1F195}\u{26A1}\u{1F527}]/gu, '').trim();
-      if (/new/i.test(h)) { cls = 'cat-new'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>'; label = 'New'; }
+      if (/new/i.test(h)) { cls = 'cat-new'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg>'; label = 'New'; }
       else if (/improved/i.test(h)) { cls = 'cat-improved'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'; label = 'Improved'; }
       else if (/fixed/i.test(h)) { cls = 'cat-fixed'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'; label = 'Fixed'; }
       if (label) return `<h3 class="${cls}">${icon}<span>${label}</span></h3>`;
