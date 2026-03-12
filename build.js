@@ -11,7 +11,7 @@ function parseFrontmatter(content) {
   const meta = {};
   match[1].split('\n').forEach(line => {
     const [key, ...rest] = line.split(':');
-    if (key && rest.length) meta[key.trim()] = rest.join(':').trim();
+    if (key && rest.length) meta[key.trim()] = rest.join(':').trim().replace(/^["']|["']$/g, '');
   });
   return { meta, body: match[2] };
 }
@@ -33,7 +33,16 @@ function md(text) {
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="entry-img">')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
-    .replace(/\n{2,}/g, '\n');
+    .replace(/\n{2,}/g, '\n')
+    // Wrap loose text lines (not tags, not list items, not empty) in <p>
+    .split('\n')
+    .map(line => {
+      const trimmed = line.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('</ul') || trimmed.startsWith('<li') || trimmed.startsWith('<img')) return line;
+      return `<p>${trimmed}</p>`;
+    })
+    .join('\n');
 }
 
 // Read and sort entries
@@ -62,6 +71,7 @@ if (fs.existsSync(logoLightPath)) logoLightBase64 = fs.readFileSync(logoLightPat
 
 const entriesHtml = entries.map(e => `
   <article class="entry">
+    <time>${fmtDate(e.meta.date)}</time>
     <h2>${e.meta.title || fmtDate(e.meta.date)}</h2>
     ${e.html}
   </article>
@@ -233,6 +243,7 @@ const html = `<!DOCTYPE html>
     background: var(--tag-bg);
     color: var(--tag-fg);
     border: 1px solid var(--tag-border);
+    clear: both;
   }
 
   .entry h3 svg {
