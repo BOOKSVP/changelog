@@ -20,11 +20,13 @@ function parseFrontmatter(content) {
 function md(text) {
   return text
     .replace(/^## (.+)$/gm, (_, h) => {
-      let cls = '';
-      if (h.includes('🆕') || h.includes('New')) cls = 'cat-new';
-      else if (h.includes('⚡') || h.includes('Improved')) cls = 'cat-improved';
-      else if (h.includes('🔧') || h.includes('Fixed')) cls = 'cat-fixed';
-      return `<h3 class="${cls}">${h}</h3>`;
+      let cls = '', icon = '', label = '';
+      const clean = h.replace(/[\u{1F195}\u{26A1}\u{1F527}]/gu, '').trim();
+      if (/new/i.test(h)) { cls = 'cat-new'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>'; label = 'New'; }
+      else if (/improved/i.test(h)) { cls = 'cat-improved'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'; label = 'Improved'; }
+      else if (/fixed/i.test(h)) { cls = 'cat-fixed'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'; label = 'Fixed'; }
+      if (label) return `<h3 class="${cls}">${icon}<span>${label}</span></h3>`;
+      return `<h3>${clean}</h3>`;
     })
     .replace(/^- (.+)$/gm, '<li>$1</li>')
     .replace(/(<li>.*<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
@@ -50,6 +52,13 @@ function fmtDate(dateStr) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
+// Logo as base64
+const logoPath = path.join(__dirname, 'logo.png');
+let logoBase64 = '';
+if (fs.existsSync(logoPath)) {
+  logoBase64 = fs.readFileSync(logoPath).toString('base64');
+}
+
 const entriesHtml = entries.map(e => `
   <article class="entry">
     <time>${fmtDate(e.meta.date)}</time>
@@ -70,29 +79,27 @@ const html = `<!DOCTYPE html>
   :root {
     --bg: #ffffff;
     --fg: #111111;
-    --fg-muted: #666666;
-    --border: #e5e5e5;
-    --badge-new-bg: #ecfdf5;
-    --badge-new-fg: #065f46;
-    --badge-improved-bg: #eff6ff;
-    --badge-improved-fg: #1e40af;
-    --badge-fixed-bg: #fff7ed;
-    --badge-fixed-fg: #9a3412;
-    --toggle-bg: #f0f0f0;
+    --fg-muted: #888888;
+    --border: #e8e8e8;
+    --tag-bg: #f5f5f5;
+    --tag-fg: #555555;
+    --tag-border: #e0e0e0;
+    --tag-icon: #777777;
+    --toggle-bg: transparent;
+    --logo-invert: 0;
   }
 
   [data-theme="dark"] {
     --bg: #111111;
     --fg: #e8e8e8;
-    --fg-muted: #888888;
+    --fg-muted: #777777;
     --border: #2a2a2a;
-    --badge-new-bg: #064e3b;
-    --badge-new-fg: #a7f3d0;
-    --badge-improved-bg: #1e3a5f;
-    --badge-improved-fg: #bfdbfe;
-    --badge-fixed-bg: #431407;
-    --badge-fixed-fg: #fed7aa;
-    --toggle-bg: #222222;
+    --tag-bg: #1e1e1e;
+    --tag-fg: #aaaaaa;
+    --tag-border: #333333;
+    --tag-icon: #888888;
+    --toggle-bg: transparent;
+    --logo-invert: 1;
   }
 
   html {
@@ -112,40 +119,72 @@ const html = `<!DOCTYPE html>
   header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 80px;
   }
 
-  .brand h1 {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--fg);
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
-  .brand p {
+  .brand img {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    filter: invert(var(--logo-invert));
+    transition: filter 0.3s ease;
+  }
+
+  .brand-text h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg);
+    line-height: 1.2;
+  }
+
+  .brand-text p {
     font-size: 13px;
     color: var(--fg-muted);
-    margin-top: 2px;
-    letter-spacing: 0.05em;
+    margin-top: 1px;
+    letter-spacing: 0.03em;
   }
 
   .toggle {
     background: var(--toggle-bg);
-    border: none;
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     color: var(--fg-muted);
     transition: all 0.3s ease;
-    letter-spacing: 0.02em;
   }
 
   .toggle:hover {
     color: var(--fg);
+    border-color: var(--fg-muted);
   }
+
+  .toggle svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .toggle:hover svg {
+    transform: rotate(15deg);
+  }
+
+  .icon-sun, .icon-moon { display: none; }
+  [data-theme="light"] .icon-moon { display: block; }
+  [data-theme="dark"] .icon-sun { display: block; }
 
   .entry {
     margin-bottom: 64px;
@@ -167,7 +206,7 @@ const html = `<!DOCTYPE html>
   }
 
   .entry h2 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     margin-bottom: 32px;
     letter-spacing: -0.01em;
@@ -175,28 +214,23 @@ const html = `<!DOCTYPE html>
 
   .entry h3 {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     margin: 28px 0 12px;
-    padding: 4px 10px;
-    border-radius: 4px;
-    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--tag-bg);
+    color: var(--tag-fg);
+    border: 1px solid var(--tag-border);
   }
 
-  .entry h3.cat-new {
-    background: var(--badge-new-bg);
-    color: var(--badge-new-fg);
-  }
-
-  .entry h3.cat-improved {
-    background: var(--badge-improved-bg);
-    color: var(--badge-improved-fg);
-  }
-
-  .entry h3.cat-fixed {
-    background: var(--badge-fixed-bg);
-    color: var(--badge-fixed-fg);
+  .entry h3 svg {
+    color: var(--tag-icon);
+    flex-shrink: 0;
   }
 
   .entry h3 + ul {
@@ -214,7 +248,7 @@ const html = `<!DOCTYPE html>
     margin-bottom: 6px;
     font-size: 15px;
     color: var(--fg);
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
   li::before {
@@ -250,6 +284,7 @@ const html = `<!DOCTYPE html>
   @media (max-width: 480px) {
     body { padding: 48px 20px 80px; }
     header { margin-bottom: 48px; }
+    .brand img { width: 40px; height: 40px; }
     .entry { margin-bottom: 40px; padding-bottom: 40px; }
   }
 </style>
@@ -257,11 +292,23 @@ const html = `<!DOCTYPE html>
 <body>
 <header>
   <div class="brand">
-    <h1>ARTSVP</h1>
-    <p>Changelog</p>
+    ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="ARTSVP">` : ''}
+    <div class="brand-text">
+      <h1>ARTSVP</h1>
+      <p>Changelog</p>
+    </div>
   </div>
   <button class="toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-    <span id="toggle-label">Dark</span>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
   </button>
 </header>
 <main>
@@ -277,7 +324,6 @@ function getTheme() {
 }
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('toggle-label').textContent = t === 'dark' ? 'Light' : 'Dark';
   localStorage.setItem('theme', t);
 }
 function toggleTheme() {
