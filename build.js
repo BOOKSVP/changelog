@@ -53,8 +53,8 @@ function fmtDate(dateStr) {
 }
 
 // Logos as base64
-const logoDarkPath = path.join(__dirname, 'logo-changelog-dark.png');
-const logoLightPath = path.join(__dirname, 'logo-changelog-light.png');
+const logoDarkPath = path.join(__dirname, 'logo-dark.png');
+const logoLightPath = path.join(__dirname, 'logo-light.png');
 let logoDarkBase64 = '', logoLightBase64 = '';
 if (fs.existsSync(logoDarkPath)) logoDarkBase64 = fs.readFileSync(logoDarkPath).toString('base64');
 if (fs.existsSync(logoLightPath)) logoLightBase64 = fs.readFileSync(logoLightPath).toString('base64');
@@ -127,14 +127,24 @@ const html = `<!DOCTYPE html>
     gap: 16px;
   }
 
+  .brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
   .brand img {
-    height: 64px;
+    height: 40px;
     width: auto;
     transition: opacity 0.3s ease;
   }
 
-  @media (max-width: 480px) {
-    .brand img { height: 48px; }
+  .brand-subtitle {
+    font-size: 14px;
+    color: var(--fg-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 400;
   }
 
   .logo-light, .logo-dark { display: none; }
@@ -282,8 +292,9 @@ const html = `<!DOCTYPE html>
 <body>
 <header>
   <div class="brand">
-    ${logoLightBase64 ? `<img class="logo-light" src="data:image/png;base64,${logoLightBase64}" alt="ARTSVP Changelog">` : ''}
-    ${logoDarkBase64 ? `<img class="logo-dark" src="data:image/png;base64,${logoDarkBase64}" alt="ARTSVP Changelog">` : ''}
+    ${logoLightBase64 ? `<img class="logo-light" src="data:image/png;base64,${logoLightBase64}" alt="ARTSVP">` : ''}
+    ${logoDarkBase64 ? `<img class="logo-dark" src="data:image/png;base64,${logoDarkBase64}" alt="ARTSVP">` : ''}
+    <span class="brand-subtitle">Changelog</span>
   </div>
   <button class="toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
