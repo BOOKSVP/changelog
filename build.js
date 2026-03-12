@@ -134,8 +134,8 @@ const html = `<!DOCTYPE html>
   }
 
   .brand img {
-    height: 40px;
-    width: auto;
+    width: 280px;
+    height: auto;
     transition: opacity 0.3s ease;
   }
 
