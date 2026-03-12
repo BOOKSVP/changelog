@@ -53,8 +53,8 @@ function fmtDate(dateStr) {
 }
 
 // Logos as base64
-const logoDarkPath = path.join(__dirname, 'logo-dark.png');
-const logoLightPath = path.join(__dirname, 'logo-light.png');
+const logoDarkPath = path.join(__dirname, 'logo-changelog-dark.png');
+const logoLightPath = path.join(__dirname, 'logo-changelog-light.png');
 let logoDarkBase64 = '', logoLightBase64 = '';
 if (fs.existsSync(logoDarkPath)) logoDarkBase64 = fs.readFileSync(logoDarkPath).toString('base64');
 if (fs.existsSync(logoLightPath)) logoLightBase64 = fs.readFileSync(logoLightPath).toString('base64');
@@ -128,30 +128,20 @@ const html = `<!DOCTYPE html>
   }
 
   .brand img {
-    height: 28px;
+    height: 64px;
     width: auto;
     transition: opacity 0.3s ease;
+  }
+
+  @media (max-width: 480px) {
+    .brand img { height: 48px; }
   }
 
   .logo-light, .logo-dark { display: none; }
   [data-theme="light"] .logo-light { display: block; }
   [data-theme="dark"] .logo-dark { display: block; }
 
-  .brand-text h1 {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg);
-    line-height: 1.2;
-  }
-
-  .brand-text p {
-    font-size: 13px;
-    color: var(--fg-muted);
-    margin-top: 1px;
-    letter-spacing: 0.03em;
-  }
+  /* brand-text removed — logo includes changelog text */
 
   .toggle {
     background: var(--toggle-bg);
@@ -292,11 +282,8 @@ const html = `<!DOCTYPE html>
 <body>
 <header>
   <div class="brand">
-    ${logoLightBase64 ? `<img class="logo-light" src="data:image/png;base64,${logoLightBase64}" alt="ARTSVP">` : ''}
-    ${logoDarkBase64 ? `<img class="logo-dark" src="data:image/jpeg;base64,${logoDarkBase64}" alt="ARTSVP">` : ''}
-    <div class="brand-text">
-      <p>Changelog</p>
-    </div>
+    ${logoLightBase64 ? `<img class="logo-light" src="data:image/png;base64,${logoLightBase64}" alt="ARTSVP Changelog">` : ''}
+    ${logoDarkBase64 ? `<img class="logo-dark" src="data:image/png;base64,${logoDarkBase64}" alt="ARTSVP Changelog">` : ''}
   </div>
   <button class="toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
