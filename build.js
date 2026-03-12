@@ -20,16 +20,12 @@ function parseFrontmatter(content) {
 // Markdown to HTML
 function md(text) {
   return text
-    // Headings → category tags
-    .replace(/^## (.+)$/gm, (_, h) => {
-      let cls = '', icon = '', label = '';
-      const clean = h.replace(/[\u{1F195}\u{26A1}\u{1F527}]/gu, '').trim();
-      if (/^new$/i.test(clean)) { cls = 'cat-new'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg>'; label = 'New'; }
-      else if (/^improved$/i.test(clean)) { cls = 'cat-improved'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'; label = 'Improved'; }
-      else if (/^fixed$/i.test(clean)) { cls = 'cat-fixed'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'; label = 'Fixed'; }
-      if (label) return `<h3 class="${cls}">${icon}<span>${label}</span></h3>`;
-      return `<h3>${clean}</h3>`;
-    })
+    // Category tags: [new], [improved], [fixed]
+    .replace(/^\[new\]\s*$/gim, '<h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>')
+    .replace(/^\[improved\]\s*$/gim, '<h3 class="cat-improved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Improved</span></h3>')
+    .replace(/^\[fixed\]\s*$/gim, '<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>')
+    // Regular headings
+    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
     // List items
     .replace(/^- (.+)$/gm, '<li>$1</li>')
     // Wrap consecutive <li> in <ul>
