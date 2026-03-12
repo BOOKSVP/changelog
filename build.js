@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ENTRIES_DIR = path.join(__dirname, 'entries');
+const PER_PAGE = 10;
 
 // Simple frontmatter parser
 function parseFrontmatter(content) {
@@ -16,32 +17,44 @@ function parseFrontmatter(content) {
   return { meta, body: match[2] };
 }
 
-// Minimal markdown to HTML
+// Markdown to HTML
 function md(text) {
   return text
+    // Headings → category tags
     .replace(/^## (.+)$/gm, (_, h) => {
       let cls = '', icon = '', label = '';
       const clean = h.replace(/[\u{1F195}\u{26A1}\u{1F527}]/gu, '').trim();
-      if (/new/i.test(h)) { cls = 'cat-new'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg>'; label = 'New'; }
-      else if (/improved/i.test(h)) { cls = 'cat-improved'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'; label = 'Improved'; }
-      else if (/fixed/i.test(h)) { cls = 'cat-fixed'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'; label = 'Fixed'; }
+      if (/^new$/i.test(clean)) { cls = 'cat-new'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg>'; label = 'New'; }
+      else if (/^improved$/i.test(clean)) { cls = 'cat-improved'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'; label = 'Improved'; }
+      else if (/^fixed$/i.test(clean)) { cls = 'cat-fixed'; icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'; label = 'Fixed'; }
       if (label) return `<h3 class="${cls}">${icon}<span>${label}</span></h3>`;
       return `<h3>${clean}</h3>`;
     })
+    // List items
     .replace(/^- (.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    // Wrap consecutive <li> in <ul>
+    .replace(/(<li>[\s\S]*?<\/li>\n?)+/g, m => `<ul>${m.trim()}</ul>`)
+    // Images
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="entry-img">')
+    // Bold
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    .replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em>$1</em>')
+    // Inline code
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // Links
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
-    .replace(/\n{2,}/g, '\n')
-    // Wrap loose text lines (not tags, not list items, not empty) in <p>
+    // Collapse multiple blank lines
+    .replace(/\n{3,}/g, '\n\n')
+    // Wrap loose text in <p> tags
     .split('\n')
     .map(line => {
-      const trimmed = line.trim();
-      if (!trimmed) return '';
-      if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('</ul') || trimmed.startsWith('<li') || trimmed.startsWith('<img')) return line;
-      return `<p>${trimmed}</p>`;
+      const t = line.trim();
+      if (!t) return '';
+      if (/^<(h[1-6]|ul|\/ul|li|img|p|\/p)/.test(t)) return t;
+      return `<p>${t}</p>`;
     })
+    .filter(line => line !== '')
     .join('\n');
 }
 
@@ -58,7 +71,7 @@ const entries = fs.readdirSync(ENTRIES_DIR)
 // Format date
 function fmtDate(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr + 'T00:00:00Z');
+  const d = new Date(dateStr.split('-').slice(0, 3).join('-') + 'T00:00:00Z');
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
@@ -69,15 +82,37 @@ let logoDarkBase64 = '', logoLightBase64 = '';
 if (fs.existsSync(logoDarkPath)) logoDarkBase64 = fs.readFileSync(logoDarkPath).toString('base64');
 if (fs.existsSync(logoLightPath)) logoLightBase64 = fs.readFileSync(logoLightPath).toString('base64');
 
-const entriesHtml = entries.map(e => `
+// Paginate
+const totalPages = Math.ceil(entries.length / PER_PAGE);
+
+function buildPage(pageNum) {
+  const start = pageNum * PER_PAGE;
+  const pageEntries = entries.slice(start, start + PER_PAGE);
+
+  const entriesHtml = pageEntries.map(e => `
   <article class="entry">
     <time>${fmtDate(e.meta.date)}</time>
     <h2>${e.meta.title || fmtDate(e.meta.date)}</h2>
     ${e.html}
-  </article>
-`).join('\n');
+  </article>`).join('\n');
 
-const html = `<!DOCTYPE html>
+  // Pagination nav
+  let paginationHtml = '';
+  if (totalPages > 1) {
+    const prevFile = pageNum > 0 ? (pageNum === 1 ? 'index.html' : `page-${pageNum}.html`) : '';
+    const nextFile = pageNum < totalPages - 1 ? `page-${pageNum + 2}.html` : '';
+    paginationHtml = `<nav class="pagination">
+      ${prevFile ? `<a href="${prevFile}" class="page-link">← Newer</a>` : '<span></span>'}
+      <span class="page-info">Page ${pageNum + 1} of ${totalPages}</span>
+      ${nextFile ? `<a href="${nextFile}" class="page-link">Older →</a>` : '<span></span>'}
+    </nav>`;
+  }
+
+  return buildHtml(entriesHtml, paginationHtml);
+}
+
+function buildHtml(entriesHtml, paginationHtml) {
+  return `<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
@@ -133,11 +168,6 @@ const html = `<!DOCTYPE html>
 
   .brand {
     display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .brand {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
@@ -161,8 +191,6 @@ const html = `<!DOCTYPE html>
   .logo-light, .logo-dark { display: none; }
   [data-theme="light"] .logo-light { display: block; }
   [data-theme="dark"] .logo-dark { display: block; }
-
-  /* brand-text removed — logo includes changelog text */
 
   .toggle {
     background: var(--toggle-bg);
@@ -189,9 +217,7 @@ const html = `<!DOCTYPE html>
     transition: transform 0.3s ease;
   }
 
-  .toggle:hover svg {
-    transform: rotate(15deg);
-  }
+  .toggle:hover svg { transform: rotate(15deg); }
 
   .icon-sun, .icon-moon { display: none; }
   [data-theme="light"] .icon-moon { display: block; }
@@ -203,9 +229,7 @@ const html = `<!DOCTYPE html>
     border-bottom: 1px solid var(--border);
   }
 
-  .entry:last-child {
-    border-bottom: none;
-  }
+  .entry:last-child { border-bottom: none; }
 
   .entry time {
     font-size: 12px;
@@ -213,13 +237,13 @@ const html = `<!DOCTYPE html>
     letter-spacing: 0.15em;
     color: var(--fg-muted);
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .entry h2 {
     font-size: 22px;
     font-weight: 500;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     letter-spacing: -0.01em;
     position: sticky;
     top: 0;
@@ -229,12 +253,19 @@ const html = `<!DOCTYPE html>
     border-bottom: 1px solid var(--border);
   }
 
+  .entry p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 12px 0;
+    color: var(--fg);
+  }
+
   .entry h3 {
     font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin: 28px 0 12px;
+    margin: 24px 0 12px;
     padding: 5px 12px;
     border-radius: 6px;
     display: inline-flex;
@@ -243,7 +274,6 @@ const html = `<!DOCTYPE html>
     background: var(--tag-bg);
     color: var(--tag-fg);
     border: 1px solid var(--tag-border);
-    clear: both;
   }
 
   .entry h3 svg {
@@ -251,9 +281,7 @@ const html = `<!DOCTYPE html>
     flex-shrink: 0;
   }
 
-  .entry h3 + ul {
-    margin-top: 0;
-  }
+  .entry h3 + ul { margin-top: 0; }
 
   .entry-img {
     max-width: 100%;
@@ -264,13 +292,13 @@ const html = `<!DOCTYPE html>
 
   ul {
     list-style: none;
-    margin: 8px 0 0;
+    margin: 8px 0 16px;
   }
 
   li {
     position: relative;
     padding-left: 16px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-size: 15px;
     color: var(--fg);
     line-height: 1.55;
@@ -287,10 +315,51 @@ const html = `<!DOCTYPE html>
     background: var(--fg-muted);
   }
 
+  strong { font-weight: 600; }
+  em { font-style: italic; }
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    background: var(--tag-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--tag-border);
+  }
+
   a {
     color: var(--fg);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .page-link {
+    font-size: 14px;
+    color: var(--fg);
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .page-link:hover {
+    background: var(--tag-bg);
+    border-color: var(--fg-muted);
+  }
+
+  .page-info {
+    font-size: 13px;
+    color: var(--fg-muted);
+    letter-spacing: 0.05em;
   }
 
   footer {
@@ -302,9 +371,7 @@ const html = `<!DOCTYPE html>
     letter-spacing: 0.05em;
   }
 
-  footer a {
-    color: var(--fg-muted);
-  }
+  footer a { color: var(--fg-muted); }
 
   @media (max-width: 480px) {
     body { padding: 48px 20px 80px; }
@@ -337,6 +404,7 @@ const html = `<!DOCTYPE html>
 <main>
 ${entriesHtml}
 </main>
+${paginationHtml}
 <footer>
   <a href="https://artsvp.com">artsvp.com</a>
 </footer>
@@ -356,6 +424,12 @@ applyTheme(getTheme());
 </script>
 </body>
 </html>`;
+}
 
-fs.writeFileSync(path.join(__dirname, 'index.html'), html);
-console.log(`Built ${entries.length} entries → index.html`);
+// Build all pages
+for (let i = 0; i < totalPages; i++) {
+  const filename = i === 0 ? 'index.html' : `page-${i + 1}.html`;
+  fs.writeFileSync(path.join(__dirname, filename), buildPage(i));
+}
+
+console.log(`Built ${entries.length} entries across ${totalPages} pages`);
