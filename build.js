@@ -30,6 +30,7 @@ function md(text) {
     })
     .replace(/^- (.+)$/gm, '<li>$1</li>')
     .replace(/(<li>.*<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="entry-img">')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
     .replace(/\n{2,}/g, '\n');
@@ -241,6 +242,13 @@ const html = `<!DOCTYPE html>
 
   .entry h3 + ul {
     margin-top: 0;
+  }
+
+  .entry-img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 16px 0;
+    display: block;
   }
 
   ul {
