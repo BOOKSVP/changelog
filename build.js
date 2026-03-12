@@ -61,8 +61,7 @@ if (fs.existsSync(logoLightPath)) logoLightBase64 = fs.readFileSync(logoLightPat
 
 const entriesHtml = entries.map(e => `
   <article class="entry">
-    <time>${fmtDate(e.meta.date)}</time>
-    <h2>${e.meta.title || ''}</h2>
+    <h2>${e.meta.title || fmtDate(e.meta.date)}</h2>
     ${e.html}
   </article>
 `).join('\n');
@@ -285,7 +284,7 @@ const html = `<!DOCTYPE html>
   @media (max-width: 480px) {
     body { padding: 48px 20px 80px; }
     header { margin-bottom: 48px; }
-    .brand img { width: 40px; height: 40px; }
+    .brand img { width: auto; height: 24px; }
     .entry { margin-bottom: 40px; padding-bottom: 40px; }
   }
 </style>
