@@ -52,12 +52,12 @@ function fmtDate(dateStr) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
-// Logo as base64
-const logoPath = path.join(__dirname, 'logo.png');
-let logoBase64 = '';
-if (fs.existsSync(logoPath)) {
-  logoBase64 = fs.readFileSync(logoPath).toString('base64');
-}
+// Logos as base64
+const logoDarkPath = path.join(__dirname, 'logo-dark.png');
+const logoLightPath = path.join(__dirname, 'logo-light.png');
+let logoDarkBase64 = '', logoLightBase64 = '';
+if (fs.existsSync(logoDarkPath)) logoDarkBase64 = fs.readFileSync(logoDarkPath).toString('base64');
+if (fs.existsSync(logoLightPath)) logoLightBase64 = fs.readFileSync(logoLightPath).toString('base64');
 
 const entriesHtml = entries.map(e => `
   <article class="entry">
@@ -86,7 +86,6 @@ const html = `<!DOCTYPE html>
     --tag-border: #e0e0e0;
     --tag-icon: #777777;
     --toggle-bg: transparent;
-    --logo-invert: 0;
   }
 
   [data-theme="dark"] {
@@ -99,7 +98,6 @@ const html = `<!DOCTYPE html>
     --tag-border: #333333;
     --tag-icon: #888888;
     --toggle-bg: transparent;
-    --logo-invert: 1;
   }
 
   html {
@@ -130,12 +128,14 @@ const html = `<!DOCTYPE html>
   }
 
   .brand img {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    filter: invert(var(--logo-invert));
-    transition: filter 0.3s ease;
+    height: 28px;
+    width: auto;
+    transition: opacity 0.3s ease;
   }
+
+  .logo-light, .logo-dark { display: none; }
+  [data-theme="light"] .logo-light { display: block; }
+  [data-theme="dark"] .logo-dark { display: block; }
 
   .brand-text h1 {
     font-size: 15px;
@@ -292,9 +292,9 @@ const html = `<!DOCTYPE html>
 <body>
 <header>
   <div class="brand">
-    ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="ARTSVP">` : ''}
+    ${logoLightBase64 ? `<img class="logo-light" src="data:image/png;base64,${logoLightBase64}" alt="ARTSVP">` : ''}
+    ${logoDarkBase64 ? `<img class="logo-dark" src="data:image/jpeg;base64,${logoDarkBase64}" alt="ARTSVP">` : ''}
     <div class="brand-text">
-      <h1>ARTSVP</h1>
       <p>Changelog</p>
     </div>
   </div>
