@@ -210,6 +210,12 @@ const html = `<!DOCTYPE html>
     font-weight: 500;
     margin-bottom: 32px;
     letter-spacing: -0.01em;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 12px 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
   }
 
   .entry h3 {
