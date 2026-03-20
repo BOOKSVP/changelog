@@ -437,4 +437,15 @@ for (let i = 0; i < totalPages; i++) {
   fs.writeFileSync(path.join(__dirname, filename), buildPage(i));
 }
 
+// Generate feed.json with last 20 entries
+const feedEntries = entries.slice(0, 20).map(e => ({
+  date: e.meta.date || '',
+  title: e.meta.title || fmtDate(e.meta.date)
+}));
+const feed = {
+  entries: feedEntries,
+  generated: new Date().toISOString()
+};
+fs.writeFileSync(path.join(__dirname, 'feed.json'), JSON.stringify(feed, null, 2));
+
 console.log(`Built ${entries.length} entries across ${totalPages} pages`);
