@@ -299,6 +299,26 @@
 <main>
 
   <article class="entry">
+    <time>7 October 2024</time>
+    <h2>More Accessibility and Stability</h2>
+    <p>This week we pushed in more changes that will make your experience at ARTSVP more accessible and stabile. As we're gearing up for a big UX sprint coming up we hope these help improve your experience with ARTSVP.</p>
+<h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
+<h3>OAuth</h3>
+<p>We've added the ability for users to integrate their gmail accounts with their existing accounts or simply use them to generate new accounts via OAuth. The sign in process is made simple through a simple GMail account authentication and you're on your way to using ARTSVP. No more having to remember long complex passwords!</p>
+<img src="https://cloud.headwayapp.co/changelogs_images/images/big/000/134/700-eac63d71fdddd3bae65877b1499740a9de2fbfb0.png" alt="Screenshot 2024-10-07 at 15.46.04.png" class="entry-img">
+<h3 class="cat-improved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Improved</span></h3>
+<ul><li>Ensuring Better Email Deliverability - To help ensure better email deliverability we've introduce a form of throttling on all of our batch email sends (invites, portals, and booking cancellations). We've done this to make sure email providers don't view those emails as spam or promotional, and so that your emails always make it to their intended receiver.</li>
+<li>Modifying Time Zones Made Simple - Modifying time zones now simply involve making a change on the event and watching as any bookings that were made with the mistaken time zone be resolved. These time zones will now no longer be associated with locations, but instead with the event itself making management much simpler.</li></ul>
+<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
+<ul><li>Additional SQL injection protection</li>
+<li>Locations update reroute bug fix</li>
+<li>CSS Updates for email banners</li>
+<li>QR Code sanitization</li>
+<li>Fix for booking info window to ensure functionality</li>
+<li>Additional information icons added to event cards</li></ul>
+  </article>
+
+  <article class="entry">
     <time>27 September 2024</time>
     <h2>Bullet Proofing Scanning: Major Enhancements & Fixes!</h2>
     <p>We're excited to roll out a series of powerful updates aimed at enhancing your scanning experience and overall app performance! This release focuses on improving user flows, fixing discrepancies, and boosting speed across key features. With a redesigned scanner interface, new guest management options, and faster tag list interactions, managing bookings and events has never been easier. Check out the full details below!</p>
@@ -507,20 +527,6 @@
 <p>We have improved the copy and language on the new Gift Aid box to be better in line with official legislation. You can now also claim gift aid on donation tickets so you do not need to turn on donations to use it.</p>
 <h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
 <ul><li>Previously archived booking links were still showing on some portals. This has been resolved.</li></ul>
-  </article>
-
-  <article class="entry">
-    <time>13 May 2024</time>
-    <h2>Gift Aid Feature & Usability Fixes</h2>
-    <h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
-<h3>Collect Gift Aid - UK Accounts</h3>
-<p>You can now enable Gift Aid collection for those based int he UK collecting Donations. If your account is registered in the UK, simple click 'Collect Gift Aid' in the Settings of the associated Event.</p>
-<img src="https://cloud.headwayapp.co/changelogs_images/images/big/000/127/546-437f8d87d625a6f97928ad2ece18710aa2657786.png" alt="CleanShot 2024-05-13 at 09.38.14@2x.png" class="entry-img">
-<p>Turning this setting ON will show a Gift Aid collection box on the first page of the booking process. In order to enable this box you MUST also enable Donations in your Event Settings.</p>
-<img src="https://cloud.headwayapp.co/changelogs_images/images/big/000/127/547-3bab5881108e53eccabec716f69eb6e45df6ca52.png" alt="CleanShot 2024-05-13 at 09.40.10@2x.png" class="entry-img">
-<p>When a user checks this box, they will be require to enter their billing address on the checkout page if they have decided to donate.</p>
-<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
-<ul><li>Reports indicated that accounts were being assigned a default space with no Events. The default Space you are assigned is now linked the the events you are a member of. If you only have access to a single event, your default space is now the associated Space with that Event.</li></ul>
   </article>
 </main>
 <nav class="pagination">
