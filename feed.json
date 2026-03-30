@@ -1,6 +1,14 @@
 {
   "entries": [
     {
+      "date": "2026-03-30",
+      "title": "Wallet Pass Designer, Faster Imports & Guest List Fixes"
+    },
+    {
+      "date": "2026-03-23",
+      "title": "Custom Branded Tickets, Wallet Pass Templates & Navigation Updates"
+    },
+    {
       "date": "2026-03-16",
       "title": "Guest Lists, Facebook Pixel & Scanner Upgrades"
     },
@@ -71,15 +79,7 @@
     {
       "date": "2024-10-21",
       "title": "Need for Speed"
-    },
-    {
-      "date": "2024-10-11",
-      "title": "New Filters and Fixes"
-    },
-    {
-      "date": "2024-10-07",
-      "title": "More Accessibility and Stability"
     }
   ],
-  "generated": "2026-03-20T10:53:49.362Z"
+  "generated": "2026-03-30T09:05:20.168Z"
 }
