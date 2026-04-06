@@ -1,6 +1,10 @@
 {
   "entries": [
     {
+      "date": "2026-04-06",
+      "title": "Entry Times for Tickets, Faster Event Pages & Sales Report Fixes"
+    },
+    {
       "date": "2026-03-30",
       "title": "Wallet Pass Designer, Faster Imports & Guest List Fixes"
     },
@@ -75,11 +79,7 @@
     {
       "date": "2024-11-06",
       "title": "Fall Tidy"
-    },
-    {
-      "date": "2024-10-21",
-      "title": "Need for Speed"
     }
   ],
-  "generated": "2026-03-30T09:05:20.168Z"
+  "generated": "2026-04-06T09:07:59.919Z"
 }

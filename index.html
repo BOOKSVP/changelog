@@ -299,6 +299,22 @@
 <main>
 
   <article class="entry">
+    <time>6 April 2026</time>
+    <h2>Entry Times for Tickets, Faster Event Pages & Sales Report Fixes</h2>
+    <h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
+<ul><li><strong>Entry Times for Tickets</strong> — You can now set a specific entry time on individual ticket types. Guests will see their allocated entry time on their booking confirmation. Ideal for fairs and events with staggered arrival slots.</li></ul>
+<ul><li><strong>Custom Fields Editing</strong> — Admins can now edit, rename, reorder and delete custom fields directly from the event custom fields page. Fields can be dragged into the order you want them to appear on booking forms.</li></ul>
+<h3 class="cat-improved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Improved</span></h3>
+<ul><li><strong>Event pages load faster</strong> — Reduced the number of database queries when displaying events with multiple ticket types, resulting in noticeably faster load times for complex events.</li></ul>
+<ul><li><strong>Booking link conflicts resolved</strong> — Fixed an edge case where events and collections sharing a URL slug could send guests to the wrong place. Links now resolve correctly in all cases.</li></ul>
+<ul><li><strong>Register Interest — clearer messaging</strong> — When a "Register Interest" event has already passed, guests now see a message that reflects this rather than the standard interest form copy.</li></ul>
+<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
+<ul><li><strong>Sales report fee totals corrected</strong> — The sales report was over-counting the ARTSVP fee for bookings with multiple ticket types (e.g. showing 10% instead of 5%). This has been corrected and reports now reflect accurate fee amounts.</li></ul>
+<ul><li><strong>Sales report product grouping fixed</strong> — Products with the same name were being merged into a single line in the sales report. Each product line item now appears separately as expected.</li></ul>
+<ul><li><strong>Ticket entry time display fixed</strong> — Entry times were displaying as a date range instead of a single time. This is now shown correctly.</li></ul>
+  </article>
+
+  <article class="entry">
     <time>30 March 2026</time>
     <h2>Wallet Pass Designer, Faster Imports & Guest List Fixes</h2>
     <h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
@@ -477,18 +493,6 @@
 <li>Bug fix related to saving organisation details when the TOS or support email are empty.</li>
 <li>Tax bug resolved with tax showing up even when set to 0%</li>
 <li>Booking Link creation bug fix related to unique slugs</li></ul>
-  </article>
-
-  <article class="entry">
-    <time>7 April 2025</time>
-    <h2>Introducing Two Factor Authentication</h2>
-    <h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
-<p>We’ve implemented Two Factor Authentication (2FA) with an Authenticator app across accounts, allowing users to secure their account access and data with 2FA. To use 2FA, go to your ‘Account’ Settings click ‘Enable 2FA’. Please make sure to note, if you are using this feature, it is important to record your back up codes to make sure you have continued access to your account in the case of losing access to your Authenticator app.</p>
-<h3 class="cat-improved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Improved</span></h3>
-<ul><li>Improve styling on longer booking links displayed in modal windows such that they are truncated visually for a cleaner look.</li></ul>
-<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
-<ul><li>Fix bug that prevented the correct implementation of timezone when filtering, by expanding then number of timezones available to select from and allowing users to modify this more broadly.</li>
-<li>Removed all legacy code for event blockers. RIP to one of our favourite first features.</li></ul>
   </article>
 </main>
 <nav class="pagination">
