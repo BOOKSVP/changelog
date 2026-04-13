@@ -299,6 +299,22 @@
 <main>
 
   <article class="entry">
+    <time>13 April 2026</time>
+    <h2>Cleaner guest access, better passes, and fewer booking headaches</h2>
+    <h3 class="cat-improved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Improved</span></h3>
+<ul><li>Exhibitors and event-level team members now only see the bookings, guest lists, and upcoming events that are relevant to their own event, instead of wider collection data.</li>
+<li>Booking confirmation emails now display banner images properly on iPhone Apple Mail, so client comms look more polished on mobile.</li>
+<li>Wallet passes now show the correct single entry time when a timed ticket has a specific entry slot.</li>
+<li>Archived bookings are now kept out of the main all-bookings view, making it easier to focus on current activity.</li>
+<li>Pass fields now strip unwanted formatting tags before appearing in wallet passes, giving guests a cleaner Apple Wallet and Google Wallet experience.</li></ul>
+<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
+<ul><li>Fixed an issue that could make invite CSV uploads fail during busy imports.</li>
+<li>Fixed a crash on the event custom fields page caused by broken legacy field links.</li>
+<li>Fixed a guest list error that could happen when someone reached a space view without the right account context.</li>
+<li>Fixed a dashboard issue where event-level users could see bookings and events outside their scope.</li></ul>
+  </article>
+
+  <article class="entry">
     <time>6 April 2026</time>
     <h2>Entry Times for Tickets, Faster Event Pages & Sales Report Fixes</h2>
     <h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
@@ -464,35 +480,6 @@
 <li>Resolved advanced event settings save issues</li>
 <li>Corrected portal notification email configurations</li>
 <li>Fixed event banner display inconsistencies</li></ul>
-  </article>
-
-  <article class="entry">
-    <time>28 April 2025</time>
-    <h2>Enhanced Webhooks, Organisation Index Pages, and Key Fixes</h2>
-    <p>This week’s updates bring exciting enhancements to our platform, including a revamped webhook interface for better data tracking and the launch of Organisation Index pages to showcase your events. Plus, we’ve rolled out key fixes and improvements to make your experience smoother than ever!</p>
-<h3 class="cat-new"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z"/></svg><span>New</span></h3>
-<p>Improved Webhook UX and Data Tracking</p>
-<p>Our webhook interface has gone a significant improvement over the last two weeks. From the ‘developers’ tab under organisation settings you can now add your own webhook endpoints and modify what version of data you receive back, as well as select what kind of events you’d like to be notified for. This new interface also allows for the ability to put endpoints on ‘inactive’ or ‘active’ status based on your use case.</p>
-<img src="https://cloud.headwayapp.co/changelogs_images/images/big/000/143/134-9c46db033a6807260355cd3d9088b00904274a6d.png" alt="Screenshot 2025-04-28 at 16.47.30.png" class="entry-img">
-<p>From a data perspective, the major modifications have been the unification of data output between our API and our webhook events and keeping up to 6 months of webhook events on file. We allow users to now select which version of data they want to receive back from a webhook event and matches the output of our API endpoints so there is a single source of truth for data as can be found in our docs (<a href="https://docs.artsvp.com/">https://docs.artsvp.com/).</a>.) As a note, the old version of data that was returned with webhook events is still available and will be available until the end of May, this should give you appropriate time to upgrade to the latest API version of data which is V3.</p>
-<p>Organisation Index Pages</p>
-<p>Organisation Index pages are now available for everyone under their custom subdomain. On this index page you have the ability to feature events you’d like to be showcased for your organisation. To enable this feature, when selecting the Audience for your event, make sure to select “Feature This Event”</p>
-<img src="https://cloud.headwayapp.co/changelogs_images/images/big/000/143/135-8e9982144161f3223a20bfb3e9b5eac45d2ee184.png" alt="Screenshot 2025-04-28 at 16.41.48.png" class="entry-img">
-<h3 class="cat-improved"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Improved</span></h3>
-<ul><li>You can now filter any bookings page by “Extras”. Perfect for when you need to quickly grab a list of people to hand out products for at the door or upon entrance.</li>
-<li>Fix the licensing issue experienced by users trying to utilize the CSV upload functionality.</li>
-<li>Further sanitize and strip any script tags or emails from booking name fields in order to avoid spammy bookings on public events.</li>
-<li>Add ability to clear search by deleting text in the search bar input and clicking enter to reset the page to it’s initial state.</li>
-<li>The Collection Overview page has been restored for users.</li>
-<li>Additional attributes for Check Ins report have been including “Invite Code”, “Invite Source”, and “Booking Link”</li></ul>
-<h3 class="cat-fixed"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Fixed</span></h3>
-<p>##</p>
-<ul><li>Fix booking link tag functionality when editing or removing tags from info details, allows removal of all tags successfully.</li>
-<li>Add a message to alert the user that the current password is required when updating their account. Does not apply when Google Oauth is the provider or for enabling/disabling 2FA.</li>
-<li>Invite status bug resolved for all invite views.</li>
-<li>Bug fix related to saving organisation details when the TOS or support email are empty.</li>
-<li>Tax bug resolved with tax showing up even when set to 0%</li>
-<li>Booking Link creation bug fix related to unique slugs</li></ul>
   </article>
 </main>
 <nav class="pagination">

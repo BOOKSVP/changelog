@@ -1,6 +1,10 @@
 {
   "entries": [
     {
+      "date": "2026-04-13",
+      "title": "Cleaner guest access, better passes, and fewer booking headaches"
+    },
+    {
       "date": "2026-04-06",
       "title": "Entry Times for Tickets, Faster Event Pages & Sales Report Fixes"
     },
@@ -75,11 +79,7 @@
     {
       "date": "2024-11-08",
       "title": "Smooth Sailing"
-    },
-    {
-      "date": "2024-11-06",
-      "title": "Fall Tidy"
     }
   ],
-  "generated": "2026-04-06T09:07:59.919Z"
+  "generated": "2026-04-13T09:03:00.579Z"
 }
