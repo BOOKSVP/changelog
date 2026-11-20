@@ -12,6 +12,7 @@ Read this file before every run.
 | Highlights | One card for each month: the newest highlight of that month. The hero's month is not shown again. |
 | Every week | The newest six entries in full, then a list of earlier weeks. Every screenshot sits under the change it shows. |
 | Archive | One page for each year with every entry in full. |
+| Share images | The build makes the link preview for every page from the hero, highlights and entries. You do not make them. |
 
 ## The weekly run
 
